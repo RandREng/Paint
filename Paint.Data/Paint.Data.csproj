@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191211200658_Initial.cs" />
+    <Compile Remove="Migrations\20191211200658_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191211202212_Initial.cs" />
+    <Compile Remove="Migrations\20191211202212_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191211211131_Initial.cs" />
+    <Compile Remove="Migrations\20191211211131_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191211213546_Initial.cs" />
+    <Compile Remove="Migrations\20191211213546_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191211220648_Initial.cs" />
+    <Compile Remove="Migrations\20191211220648_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191211221933_Initial.cs" />
+    <Compile Remove="Migrations\20191211221933_Initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paint.Domain\Paint.Domain.csproj" />
+    <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
+  </ItemGroup>
+
+</Project>
