@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Paint.Data;
 using Paint.Domain;
+using Paint.MVC.Helpers;
 
 namespace Paint.MVC.Controllers
 {
+    [Authorize]
     public class ClientsController : Controller
     {
         private readonly Context _context;
@@ -48,11 +51,13 @@ namespace Paint.MVC.Controllers
         }
 
         // GET: Clients/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Id");
-            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Id");
-            return View();
+            Client client = new Client();
+            client.ParentId = id;
+            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Name");
+            ViewData["ParentId"] = NullableSelectList.Create<int,Client>(_context.Set<Client>(), "Id", "Name", "-- none --") ;
+            return View(client);
         }
 
         // POST: Clients/Create
@@ -68,8 +73,9 @@ namespace Paint.MVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Id", client.ClientTypeId);
-            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Id", client.ParentId);
+            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Name", client.ClientTypeId);
+            //            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Name", client.ParentId);
+            ViewData["ParentId"] = NullableSelectList.Create<int, Client>(_context.Set<Client>(), "Id", "Name", "-- none --");
             return View(client);
         }
 
@@ -86,8 +92,9 @@ namespace Paint.MVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Id", client.ClientTypeId);
-            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Id", client.ParentId);
+            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Name", client.ClientTypeId);
+            ViewData["ParentId"] = NullableSelectList.Create<int, Client>(_context.Set<Client>(), "Id", "Name", "-- none --");
+//            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Name", client.ParentId);
             return View(client);
         }
 
@@ -123,8 +130,9 @@ namespace Paint.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Id", client.ClientTypeId);
-            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Id", client.ParentId);
+            ViewData["ClientTypeId"] = new SelectList(_context.Set<ClientType>(), "Id", "Name", client.ClientTypeId);
+            //            ViewData["ParentId"] = new SelectList(_context.Clients, "Id", "Name", client.ParentId);
+            ViewData["ParentId"] = NullableSelectList.Create<int, Client>(_context.Set<Client>(), "Id", "Name", "-- none --");
             return View(client);
         }
 

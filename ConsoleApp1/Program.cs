@@ -17,7 +17,7 @@ namespace ConsoleApp1
                 ctx.ChangeTracker.Tracked += ChangeTracker_Tracked;
                 ctx.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
 
-                Client client = ctx.Clients.FirstOrDefault();
+                Client client = ctx.Clients.AsTracking().FirstOrDefault();
                 Client client2 = new Client();
                 client2.FirstName = "Chase";
                 client2.Active = true;
