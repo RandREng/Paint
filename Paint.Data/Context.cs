@@ -16,6 +16,16 @@ namespace Paint.Data
         public DbSet<PaintItem> Paints { get; set; }
         public DbSet<Job> Jobs { get; set; }
 
+        public Context()
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
+
+        public Context(DbContextOptions options) : base(options)
+        {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

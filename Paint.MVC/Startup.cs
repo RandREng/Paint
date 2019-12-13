@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Paint.Data;
+using RandREng.Common;
 
 namespace Paint.MVC
 {
@@ -29,6 +31,12 @@ namespace Paint.MVC
         {
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+
+            services.AddDbContext<Context>(options =>
+            {
+                options.ConfigureFromSettings<Context>(Configuration);
+            });
+
 
             services.AddControllersWithViews(options =>
             {

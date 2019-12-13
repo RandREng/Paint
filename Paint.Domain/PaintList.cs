@@ -11,6 +11,7 @@ namespace Paint.Domain
     {
         public int JobId { get; set; }
         public Job Job { get; set; }
+
         [NotMapped]
         public List<PaintItem> paints { get; set; } = new List<PaintItem>();
         public int CeilingId { get; set; } = 2;
@@ -18,18 +19,21 @@ namespace Paint.Domain
         public int WallId { get; set; } = 10;
         public int TaxRate { get; set; } = 7;
 
+        [NotMapped]
         public PaintItem CeilingPaint
         {
             get { return paints?.FirstOrDefault(p => p.Id == CeilingId); }
             set { CeilingId = value.Id; }
         }
 
+        [NotMapped]
         public PaintItem TrimPaint
         {
             get { return paints?.FirstOrDefault(p => p.Id == TrimId); }
             set { TrimId = value.Id; }
         }
 
+        [NotMapped]
         public PaintItem WallPaint
         {
             get { return paints?.FirstOrDefault(p => p.Id == WallId); }
