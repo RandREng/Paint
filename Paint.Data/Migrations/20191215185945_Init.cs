@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Paint.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -136,38 +136,17 @@ namespace Paint.Data.Migrations
                     CeilingId = table.Column<int>(nullable: false),
                     TrimId = table.Column<int>(nullable: false),
                     WallId = table.Column<int>(nullable: false),
-                    TaxRate = table.Column<int>(nullable: false),
-                    CeilingPaintId = table.Column<int>(nullable: true),
-                    TrimPaintId = table.Column<int>(nullable: true),
-                    WallPaintId = table.Column<int>(nullable: true)
+                    TaxRate = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaintList", x => x.JobId);
-                    table.ForeignKey(
-                        name: "FK_PaintList_Paints_CeilingPaintId",
-                        column: x => x.CeilingPaintId,
-                        principalTable: "Paints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PaintList_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PaintList_Paints_TrimPaintId",
-                        column: x => x.TrimPaintId,
-                        principalTable: "Paints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PaintList_Paints_WallPaintId",
-                        column: x => x.WallPaintId,
-                        principalTable: "Paints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,6 +211,11 @@ namespace Paint.Data.Migrations
                 columns: new[] { "Id", "Active", "ClientTypeId", "CompanyName", "FirstName", "LastName", "Notes", "ParentId" },
                 values: new object[] { 1, true, 1, "OfferPad", null, null, null, null });
 
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Active", "ClientTypeId", "CompanyName", "FirstName", "LastName", "Notes", "ParentId" },
+                values: new object[] { 2, true, 1, "OfferPad", null, null, null, 1 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientTypeId",
                 table: "Clients",
@@ -248,21 +232,6 @@ namespace Paint.Data.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaintList_CeilingPaintId",
-                table: "PaintList",
-                column: "CeilingPaintId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaintList_TrimPaintId",
-                table: "PaintList",
-                column: "TrimPaintId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaintList_WallPaintId",
-                table: "PaintList",
-                column: "WallPaintId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Room_JobId",
                 table: "Room",
                 column: "JobId");
@@ -274,13 +243,13 @@ namespace Paint.Data.Migrations
                 name: "PaintList");
 
             migrationBuilder.DropTable(
+                name: "Paints");
+
+            migrationBuilder.DropTable(
                 name: "PhoneNumber");
 
             migrationBuilder.DropTable(
                 name: "Room");
-
-            migrationBuilder.DropTable(
-                name: "Paints");
 
             migrationBuilder.DropTable(
                 name: "Jobs");

@@ -83,8 +83,16 @@ namespace Paint.Data
                         CompanyName = "OfferPad",
                         ClientTypeId = 1,
                         Active = true
+                    },
+                    new Client
+                    {
+                        Id = 2,
+                        CompanyName = "OfferPad",
+                        ClientTypeId = 1,
+                        ParentId = 1,
+                        Active = true
                     }
-                );
+                ); ;
             });
             modelBuilder.Entity<PaintItem>(entity =>
             {

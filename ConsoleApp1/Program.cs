@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Paint.Data;
 using Paint.Domain;
+using RandREng.Paging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ConsoleApp1
@@ -14,28 +16,54 @@ namespace ConsoleApp1
             using (Context ctx = new Context())
             {
                 ctx.Database.EnsureCreated();
-                ctx.ChangeTracker.Tracked += ChangeTracker_Tracked;
-                ctx.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
+                Populate();
+                int page = 9900;
+                int pageSize = 100;
+                PagedResult<Job> jobs;
 
-                Client client = ctx.Clients.AsTracking().FirstOrDefault();
-                Client client2 = new Client();
-                client2.FirstName = "Chase";
-                client2.Active = true;
-                client2.ClientTypeId = client.ClientTypeId;
-                client.Clients.Add(client2);
-                Job job1 = new Job();
-                client2.Jobs.Add(job1);
-                //Job job2 = ctx.Jobs.FirstOrDefault();
-                job1.PaintList = new PaintList();                //client.Jobs.Add(job1);
-                ctx.ChangeTracker.DetectChanges();
-                int x = ctx.SaveChanges();
+                do
+                {
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    List<int> ids = new List<int> { 1, 2 };
+                    jobs = ctx.Jobs
+                        .Where(j => ids.Contains(j.ClientId))
+                        .OrderBy(j => j.Id)
+                        .GetPaged<Job>(page, pageSize);
+                    stopwatch.Stop();
+                    System.Console.WriteLine($"{page} - {stopwatch.ElapsedMilliseconds}");
+                    page -= 100;
+                } while (page > 0);
+
             }
+        }
+
+        const int JOB_COUNT = 1000000;
+
+        static void Populate()
+        {
             using (Context ctx = new Context())
             {
-                ctx.ChangeTracker.Tracked += ChangeTracker_Tracked;
-                ctx.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
+//                ctx.Database.EnsureCreated();
+                //ctx.ChangeTracker.Tracked += ChangeTracker_Tracked;
+                //ctx.ChangeTracker.StateChanged += ChangeTracker_StateChanged;
 
-                List<Client> client = ctx.Clients.Where(c => c.ParentId == null).Include(c => c.Clients).ToList();
+//                Client client = ctx.Clients.AsTracking().FirstOrDefault(c => c.Id == 2);
+                int start = ctx.Jobs.Count() + 1;
+                for (int i = start; i <= JOB_COUNT; i++)
+                {
+                    Job job1 = new Job();
+                    job1.Address = new Address();
+                    job1.Address.Line1 = $"{i} MadeUp Way";
+                    job1.ClientId = 2;
+                    ctx.Jobs.Add(job1);
+                    if (i % 1000 == 0)
+                    {
+                        int y = ctx.SaveChanges();
+                        System.Console.WriteLine($"{i} - Created");
+                    }
+                }
+                int x = ctx.SaveChanges();
             }
         }
 

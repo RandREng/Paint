@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Paint.Data;
 using Paint.Domain;
 using Paint.MVC.Helpers;
+using Paint.MVC.Models;
+using RandREng.Paging.EFCore;
 
 namespace Paint.MVC.Controllers
 {
@@ -42,12 +44,24 @@ namespace Paint.MVC.Controllers
                 .Include(c => c.Parent)
                 .Include(c => c.Clients)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (client == null)
             {
                 return NotFound();
             }
+            var model = new ClientViewModel();
+            model.Active = client.Active;
+            model.BillingAddress = client.BillingAddress?.GetFormattedSiteAddress();
+            model.Clients = client.Clients;
+            model.ClientType = client.ClientType.Name;
+            model.Notes = client.Notes;
+            model.Name = client.Name;
 
-            return View(client);
+            model.Jobs = await _context.Jobs.Where(j => j.ClientId == client.Id).GetPagedAsync<Job>(1, 20);
+//            model.Jobs.Results[0].Address.GetFormattedSiteAddress();
+//            model.Jobs.Results[0].Address.Line1;
+
+            return View(model);
         }
 
         // GET: Clients/Create

@@ -10,8 +10,8 @@ using Paint.Data;
 namespace Paint.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20191211223251_Initial")]
-    partial class Initial
+    [Migration("20191215185945_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,6 +68,14 @@ namespace Paint.Data.Migrations
                             Active = true,
                             ClientTypeId = 1,
                             CompanyName = "OfferPad"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Active = true,
+                            ClientTypeId = 1,
+                            CompanyName = "OfferPad",
+                            ParentId = 1
                         });
                 });
 
@@ -303,31 +311,16 @@ namespace Paint.Data.Migrations
                     b.Property<int>("CeilingId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CeilingPaintId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TaxRate")
                         .HasColumnType("int");
 
                     b.Property<int>("TrimId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrimPaintId")
-                        .HasColumnType("int");
-
                     b.Property<int>("WallId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WallPaintId")
-                        .HasColumnType("int");
-
                     b.HasKey("JobId");
-
-                    b.HasIndex("CeilingPaintId");
-
-                    b.HasIndex("TrimPaintId");
-
-                    b.HasIndex("WallPaintId");
 
                     b.ToTable("PaintList");
                 });
@@ -514,23 +507,11 @@ namespace Paint.Data.Migrations
 
             modelBuilder.Entity("Paint.Domain.PaintList", b =>
                 {
-                    b.HasOne("Paint.Domain.PaintItem", "CeilingPaint")
-                        .WithMany()
-                        .HasForeignKey("CeilingPaintId");
-
                     b.HasOne("Paint.Domain.Job", "Job")
                         .WithOne("PaintList")
                         .HasForeignKey("Paint.Domain.PaintList", "JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Paint.Domain.PaintItem", "TrimPaint")
-                        .WithMany()
-                        .HasForeignKey("TrimPaintId");
-
-                    b.HasOne("Paint.Domain.PaintItem", "WallPaint")
-                        .WithMany()
-                        .HasForeignKey("WallPaintId");
                 });
 
             modelBuilder.Entity("Paint.Domain.Room", b =>
