@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Paint.Data;
 using Paint.Domain;
 using RandREng.Paging;
@@ -11,13 +13,49 @@ namespace ConsoleApp1
 {
     class Program
     {
+        public static IConfigurationRoot Configuration { get; set; }
+        static void Configure()
+        {
+            var devEnvironmentVariable = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
+
+            var isDevelopment = string.IsNullOrEmpty(devEnvironmentVariable) ||
+                                devEnvironmentVariable.ToLower() == "development";
+            //Determines the working environment as IHostingEnvironment is unavailable in a console app
+
+            var builder = new ConfigurationBuilder();
+            // tell the builder to look for the appsettings.json file
+            builder
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            //only add secrets in development
+            if (isDevelopment)
+            {
+                builder.AddUserSecrets<Program>();
+            }
+
+            Configuration = builder.Build();
+
+            IServiceCollection services = new ServiceCollection();
+
+            //Map the implementations of your classes here ready for DI
+            services
+//                .Configure<SecretStuff>(Configuration.GetSection(nameof(SecretStuff)))
+                .AddOptions()
+                .AddLogging()
+//                .AddSingleton<ISecretRevealer, SecretRevealer>()
+                .BuildServiceProvider();
+
+            var serviceProvider = services.BuildServiceProvider();
+        }
+
+
         static void Main(string[] args)
         {
             using (Context ctx = new Context())
             {
                 ctx.Database.EnsureCreated();
                 Populate();
-                int page = 9900;
+                int page = 1;
                 int pageSize = 100;
                 PagedResult<Job> jobs;
 
@@ -32,13 +70,13 @@ namespace ConsoleApp1
                         .GetPaged<Job>(page, pageSize);
                     stopwatch.Stop();
                     System.Console.WriteLine($"{page} - {stopwatch.ElapsedMilliseconds}");
-                    page -= 100;
-                } while (page > 0);
+                    page += 1;
+                } while (jobs.PageSize == jobs.Results.Count());
 
             }
         }
 
-        const int JOB_COUNT = 1000000;
+        const int JOB_COUNT = 10000;
 
         static void Populate()
         {

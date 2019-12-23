@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-Paint.API-bb0cb6c2-8486-48d4-839f-bf6b74977b49</UserSecretsId>
+    <WebProject_DirectoryAccessLevelKey>1</WebProject_DirectoryAccessLevelKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Paint.Data\Paint.Data.csproj" />
+    <ProjectReference Include="..\Paint.Domain\Paint.Domain.csproj" />
+    <ProjectReference Include="..\Paint.DTO\Paint.DTO.csproj" />
+    <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
+    <ProjectReference Include="..\RandREng.Paging.EFCore\RandREng.Paging.EFCore.csproj" />
+    <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />
+  </ItemGroup>
+
+</Project>

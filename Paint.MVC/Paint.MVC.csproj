@@ -6,6 +6,13 @@
     <WebProject_DirectoryAccessLevelKey>1</WebProject_DirectoryAccessLevelKey>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Shared\Components\Pager\**" />
+    <Content Remove="Views\Shared\Components\Pager\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\Pager\**" />
+    <None Remove="Views\Shared\Components\Pager\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.0" />
@@ -28,11 +35,6 @@
     <ProjectReference Include="..\Paint.Domain\Paint.Domain.csproj" />
     <ProjectReference Include="..\RandREng.Paging.EFCore\RandREng.Paging.EFCore.csproj" />
     <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Views\Shared\Components\Pager\" />
   </ItemGroup>
 
 </Project>

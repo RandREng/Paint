@@ -21,6 +21,7 @@ namespace Paint.MVC.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Billing Address")]
         public string BillingAddress { get; set; }
 
         [Display(Name = "Phone Numbers")]

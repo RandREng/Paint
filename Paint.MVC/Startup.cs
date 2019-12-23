@@ -34,7 +34,7 @@ namespace Paint.MVC
 
             services.AddDbContext<Context>(options =>
             {
-                options.ConfigureFromSettings<Context>(Configuration);
+                options.ConfigureFromSettings<Context>(Configuration, "PaintDb");
             });
 
 

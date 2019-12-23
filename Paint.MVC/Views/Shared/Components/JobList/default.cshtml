@@ -1,0 +1,74 @@
+﻿@model RandREng.Paging.PagedResult<Paint.Domain.Job>
+
+@{
+    var urlTemplate = Url.Action() + "?page={0}";
+    var request = ViewContext.HttpContext.Request;
+    foreach (var key in request.Query.Keys)
+    {
+        if (key == "page")
+        {
+            continue;
+        }
+
+        urlTemplate += "&" + key + "=" + request.Query[key];
+    }
+
+    var startIndex = Math.Max(Model.CurrentPage - 5, 1);
+    var finishIndex = Math.Min(Model.CurrentPage + 5, Model.PageCount);
+}
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Address
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Results)
+        {
+            <tr>
+                <td>
+                    @item.Address?.GetFormattedSiteAddress()
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-4 col-sm-4 items-info">
+        Items @Model.FirstRowOnPage to @Model.LastRowOnPage of @Model.RowCount total
+    </div>
+    <div class="col-md-8 col-sm-8">
+        @if (Model.PageCount > 1)
+        {
+            <ul class="pagination pull-right">
+                <li><a href="@urlTemplate.Replace("{0}", "1")">&laquo;</a></li>
+                @for (var i = startIndex; i <= finishIndex; i++)
+                {
+                    @if (i == Model.CurrentPage)
+                    {
+                        <li><span>@i</span></li>
+                    }
+                    else
+                    {
+                        <li><a href="@urlTemplate.Replace("{0}", i.ToString())">@i</a></li>
+                    }
+                }
+                <li><a href="@urlTemplate.Replace("{0}", Model.PageCount.ToString())">&raquo;</a></li>
+            </ul>
+        }
+    </div>
+</div>

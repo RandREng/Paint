@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Client</h1>
 
 <div>
     <dl class="row">
@@ -42,6 +42,18 @@
 </div>
 
 <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseClients" role="button" aria-expanded="false" aria-controls="collapseClients">
+        Link with href
+    </a>
+
+</p>
+<div class="collapse" id="collapseClients">
+    <div class="card card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+    </div>
+</div>
+
+<p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
@@ -54,17 +66,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Jobs.Results) {
-        <tr>
-            <td>
-                @item.Address.GetFormattedSiteAddress()
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+        @foreach (var item in Model.Jobs.Results)
+        {
+            <tr>
+                <td>
+                    @item.Address?.GetFormattedSiteAddress()
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
         }
     </tbody>
 </table>

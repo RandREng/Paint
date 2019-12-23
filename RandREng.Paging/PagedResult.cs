@@ -10,6 +10,9 @@ namespace RandREng.Paging
         public int PageSize { get; set; }
         public int RowCount { get; set; }
 
+        public int FirstRowOnPage { get { return 1; } }
+        public int LastRowOnPage { get { return 1; } }
+
         public IList<T> Results { get; set; }
 
         public PagedResult()
