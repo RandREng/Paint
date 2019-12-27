@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>1e6dfd9b-ce5e-42dd-9352-0f2a4b6584ba</UserSecretsId>
   </PropertyGroup>
 
@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20191226150254_Bid.Designer.cs" />
     <Compile Remove="Migrations\20191226150739_Bid.cs" />
     <Compile Remove="Migrations\20191226150739_Bid.Designer.cs" />
+    <Compile Remove="Migrations\20191227162555_Pricing.cs" />
+    <Compile Remove="Migrations\20191227162555_Pricing.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

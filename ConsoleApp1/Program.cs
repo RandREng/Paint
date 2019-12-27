@@ -3,17 +3,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Paint.Data;
 using Paint.Domain;
+using ProjectManager;
 using RandREng.Common;
 using RandREng.Paging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace ConsoleApp1
 {
     class Program
     {
+        const string SourceDir = @"C:\Users\rober\OneDrive\Documents\Project Awards\";
+
         public static IConfigurationRoot Configuration { get; set; }
         public static ServiceProvider ServiceProvider { get; set; }
         static void Configure()
@@ -55,8 +59,23 @@ namespace ConsoleApp1
             ServiceProvider = services.BuildServiceProvider();
         }
 
-
         static void Main(string[] args)
+        {
+            Configure();
+            using (Context ctx = ServiceProvider.GetService<Context>())
+            {
+                DirectoryInfo dir = new DirectoryInfo(SourceDir);
+                ProjectAward projcect = new ProjectAward(ctx);
+                foreach (FileInfo fi in dir.GetFiles("*.xlsx"))
+                {
+                    projcect.Process(fi.FullName);
+                }
+            }
+
+        }
+
+
+        static void Main2(string[] args)
         {
             Configure();
             Populate();

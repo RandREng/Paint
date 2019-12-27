@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandREng.Paging.EFCore", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paint.API", "Paint.API\Paint.API.csproj", "{EAFD9AF4-3259-4269-B1A8-1B2C7769FB15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paint.DTO", "Paint.DTO\Paint.DTO.csproj", "{9E08E65E-1D58-47FA-8805-4CBF27B9F8B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paint.DTO", "Paint.DTO\Paint.DTO.csproj", "{9E08E65E-1D58-47FA-8805-4CBF27B9F8B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectManager.OpenDoor", "ProjectManager.OpenDoor\ProjectManager.OpenDoor.csproj", "{88C65F91-688B-48FE-B4FD-EFF637A5D69A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{9E08E65E-1D58-47FA-8805-4CBF27B9F8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E08E65E-1D58-47FA-8805-4CBF27B9F8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E08E65E-1D58-47FA-8805-4CBF27B9F8B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

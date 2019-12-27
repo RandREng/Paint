@@ -15,6 +15,8 @@ namespace Paint.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<PaintItem> Paints { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<PriceListLineItem> PriceList { get; set; }
 
         public Context()
         {
@@ -88,11 +90,13 @@ namespace Paint.Data
                     {
                         Id = 2,
                         CompanyName = "OfferPad",
+                        FirstName = "Chase",
+                        LastName = "Timms",
                         ClientTypeId = 1,
                         ParentId = 1,
                         Active = true
                     }
-                ); ;
+                );
             });
             modelBuilder.Entity<PaintItem>(entity =>
             {

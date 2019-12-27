@@ -11,7 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Paint.Data\Paint.Data.csproj" />
     <ProjectReference Include="..\Paint.Domain\Paint.Domain.csproj" />
+    <ProjectReference Include="..\ProjectManager.OpenDoor\ProjectManager.OpenDoor.csproj" />
     <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
     <ProjectReference Include="..\RandREng.Paging.EFCore\RandREng.Paging.EFCore.csproj" />
     <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />

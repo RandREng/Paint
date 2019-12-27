@@ -9,8 +9,8 @@ namespace Paint.Domain
 	{
 		public int Id { get; set; }
 		public int JobId { get; set; }
-		public string Address { get; set; }
-		public string ProgjectManager { get; set; }
+//		public string Address { get; set; }
+//		public string ProgjectManager { get; set; }
 		public DateTime Date { get; set; }
 		public string SquareFoot { get; set; }
 		public string BedBath { get; set; }
