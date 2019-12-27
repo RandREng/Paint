@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 namespace Paint.Domain
@@ -12,7 +13,9 @@ namespace Paint.Domain
         public string Name { get; set; }
         public int LowCoverage { get; set; }
         public int HiCoverage { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal GallonPrice { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal FiveGallonPrice { get; set; }
 
         [XmlIgnore]

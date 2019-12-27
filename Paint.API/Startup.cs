@@ -17,6 +17,7 @@ using RandREng.Common;
 using AutoMapper;
 using System.Reflection;
 using Paint.DTO;
+using Microsoft.AspNetCore.Http;
 
 namespace Paint.API
 {
@@ -34,7 +35,11 @@ namespace Paint.API
         {
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
                 .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
-            services.AddControllers();
+
+            services.AddControllers(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
 
             services.AddAutoMapper(typeof(PaintProfile));
 
@@ -70,6 +75,18 @@ namespace Paint.API
                 logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+                    });
+                });
+            }
+
             app.UseHsts();
 
             app.UseCors("CorsPolicy");

@@ -19,6 +19,103 @@ namespace Paint.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Paint.Domain.BidArea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BidSheetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BidSheetId");
+
+                    b.ToTable("BidArea");
+                });
+
+            modelBuilder.Entity("Paint.Domain.BidItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BidAreaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Sub")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BidAreaId");
+
+                    b.ToTable("BidItem");
+                });
+
+            modelBuilder.Entity("Paint.Domain.BidSheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BedBath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LockBox")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProgjectManager")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("RenoTotal")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("SquareFoot")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId")
+                        .IsUnique();
+
+                    b.ToTable("BidSheet");
+                });
+
             modelBuilder.Entity("Paint.Domain.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -127,6 +224,21 @@ namespace Paint.Data.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RenovationBudget")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("SquareFootage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
@@ -142,10 +254,10 @@ namespace Paint.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("FiveGallonPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("GallonPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("Grade")
                         .HasColumnType("int");
@@ -342,20 +454,20 @@ namespace Paint.Data.Migrations
                     b.Property<int>("DoorsSF")
                         .HasColumnType("int");
 
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Height")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Length")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Length")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Width")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Width")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("WindowSF")
                         .HasColumnType("int");
@@ -365,6 +477,33 @@ namespace Paint.Data.Migrations
                     b.HasIndex("JobId");
 
                     b.ToTable("Room");
+                });
+
+            modelBuilder.Entity("Paint.Domain.BidArea", b =>
+                {
+                    b.HasOne("Paint.Domain.BidSheet", null)
+                        .WithMany("Areas")
+                        .HasForeignKey("BidSheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Paint.Domain.BidItem", b =>
+                {
+                    b.HasOne("Paint.Domain.BidArea", null)
+                        .WithMany("Items")
+                        .HasForeignKey("BidAreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Paint.Domain.BidSheet", b =>
+                {
+                    b.HasOne("Paint.Domain.Job", null)
+                        .WithOne("BidSheet")
+                        .HasForeignKey("Paint.Domain.BidSheet", "JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Paint.Domain.Client", b =>

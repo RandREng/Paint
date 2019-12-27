@@ -20,29 +20,38 @@ namespace Paint.WinForm
             InitializeComponent();
 
 
-            var bs = new BindingSource();
             this.Job.PaintList = new PaintList();
 
-            bs.DataSource = this.Job.PaintList.paints.Where(p => p.Type == PaintType.Trim);
+            var bs = new BindingSource
+            {
+                DataSource = this.Job.PaintList.Paints.Where(p => p.Type == PaintType.Trim)
+            };
+
             this.comboBoxTrim.DataSource = bs;
             this.comboBoxTrim.DisplayMember = "Name";
             this.comboBoxTrim.DataBindings.Add("SelectedItem", this.Job.PaintList, "TrimPaint");
 
-            bs = new BindingSource();
-            bs.DataSource = this.Job.PaintList.paints.Where(p => p.Type == PaintType.Ceiling);
+            bs = new BindingSource
+            {
+                DataSource = this.Job.PaintList.Paints.Where(p => p.Type == PaintType.Ceiling)
+            };
             this.comboBoxCeiling.DataSource = bs;
             this.comboBoxCeiling.DisplayMember = "Name";
             this.comboBoxCeiling.DataBindings.Add("SelectedItem", this.Job.PaintList, "CeilingPaint");
 
-            bs = new BindingSource();
-            bs.DataSource = this.Job.PaintList.paints.Where(p => p.Type == PaintType.Walls);
+            bs = new BindingSource
+            {
+                DataSource = this.Job.PaintList.Paints.Where(p => p.Type == PaintType.Walls)
+            };
             this.comboBoxWalls.DataSource = bs;
             this.comboBoxWalls.DisplayMember = "Name";
             this.comboBoxWalls.DataBindings.Add("SelectedItem", this.Job.PaintList, "WallPaint");
 
-            bs = new BindingSource();
-            bs.DataSource = this.Job.Rooms;
-            bs.AllowNew = true;
+            bs = new BindingSource
+            {
+                DataSource = this.Job.Rooms,
+                AllowNew = true
+            };
             this.dataGridView1.DataSource = bs;
             bs.CurrentItemChanged += Bs_CurrentItemChanged;
 

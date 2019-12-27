@@ -13,7 +13,7 @@ namespace Paint.Domain
         public Job Job { get; set; }
 
         [NotMapped]
-        public List<PaintItem> paints { get; set; } = new List<PaintItem>();
+        public List<PaintItem> Paints { get; set; } = new List<PaintItem>();
         public int CeilingId { get; set; } = 2;
         public int TrimId { get; set; } = 5;
         public int WallId { get; set; } = 10;
@@ -22,21 +22,21 @@ namespace Paint.Domain
         [NotMapped]
         public PaintItem CeilingPaint
         {
-            get { return paints?.FirstOrDefault(p => p.Id == CeilingId); }
+            get { return Paints?.FirstOrDefault(p => p.Id == CeilingId); }
             set { CeilingId = value.Id; }
         }
 
         [NotMapped]
         public PaintItem TrimPaint
         {
-            get { return paints?.FirstOrDefault(p => p.Id == TrimId); }
+            get { return Paints?.FirstOrDefault(p => p.Id == TrimId); }
             set { TrimId = value.Id; }
         }
 
         [NotMapped]
         public PaintItem WallPaint
         {
-            get { return paints?.FirstOrDefault(p => p.Id == WallId); }
+            get { return Paints?.FirstOrDefault(p => p.Id == WallId); }
             set { WallId = value.Id; }
         }
 
@@ -44,7 +44,7 @@ namespace Paint.Domain
         {
             if (!File.Exists("paint.json"))
             {
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 1,
                     Type = PaintType.Ceiling,
@@ -55,7 +55,7 @@ namespace Paint.Domain
                     GallonPrice = 11.98M,
                     FiveGallonPrice = 44.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 2,
                     Type = PaintType.Ceiling,
@@ -66,7 +66,7 @@ namespace Paint.Domain
                     GallonPrice = 19.98M,
                     FiveGallonPrice = 70.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 3,
                     Type = PaintType.Trim,
@@ -77,7 +77,7 @@ namespace Paint.Domain
                     GallonPrice = 21.98M,
                     FiveGallonPrice = 0M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 4,
                     Type = PaintType.Trim,
@@ -88,7 +88,7 @@ namespace Paint.Domain
                     GallonPrice = 19.98M,
                     FiveGallonPrice = 89.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 5,
                     Type = PaintType.Trim,
@@ -99,7 +99,7 @@ namespace Paint.Domain
                     GallonPrice = 22.98M,
                     FiveGallonPrice = 102M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 6,
                     Type = PaintType.Trim,
@@ -110,7 +110,7 @@ namespace Paint.Domain
                     GallonPrice = 25.98M,
                     FiveGallonPrice = 121M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 7,
                     Type = PaintType.Trim,
@@ -121,7 +121,7 @@ namespace Paint.Domain
                     GallonPrice = 36.98M,
                     FiveGallonPrice = 168M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 8,
                     Type = PaintType.Walls,
@@ -132,7 +132,7 @@ namespace Paint.Domain
                     GallonPrice = 14.98M,
                     FiveGallonPrice = 76.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 9,
                     Type = PaintType.Walls,
@@ -143,7 +143,7 @@ namespace Paint.Domain
                     GallonPrice = 17.98M,
                     FiveGallonPrice = 79.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 10,
                     Type = PaintType.Walls,
@@ -154,7 +154,7 @@ namespace Paint.Domain
                     GallonPrice = 20.98M,
                     FiveGallonPrice = 97.98M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 11,
                     Type = PaintType.Walls,
@@ -165,7 +165,7 @@ namespace Paint.Domain
                     GallonPrice = 25.98M,
                     FiveGallonPrice = 112M,
                 });
-                this.paints.Add(new PaintItem
+                this.Paints.Add(new PaintItem
                 {
                     Id = 12,
                     Type = PaintType.Walls,
@@ -215,7 +215,7 @@ namespace Paint.Domain
         private readonly List<Room> Rooms;
 
         public PaintType Type { get { return this.Paint.Type; } }
-        public int SF
+        public decimal SF
         {
             get
             {

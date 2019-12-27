@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Paint.Domain
 {
@@ -7,9 +8,12 @@ namespace Paint.Domain
         [Key]
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public int Width { get; set; }
-        public int Length { get; set; }
-        public int Height { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Width { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Length { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Height { get; set; }
         public int DoorsSF { get; set; }
         public int WindowSF { get; set; }
         public int BaseBoardHeight { get; set; }
