@@ -3,10 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Paint.Data.Migrations
 {
-    public partial class Bid : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ClientType",
                 columns: table => new
@@ -39,6 +59,39 @@ namespace Paint.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Paints", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceList",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    MaterialSupplier = table.Column<string>(nullable: true),
+                    ModelNumber = table.Column<string>(nullable: true),
+                    UOM = table.Column<int>(nullable: false),
+                    MaterialUnitCost = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Tax = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    MaterialTotalCost = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    LaborRate = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    LaborHours = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    LaborSubtotal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    LaborTotal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    ProfitMargin = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    ProfitTotal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceList", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PriceList_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -134,14 +187,12 @@ namespace Paint.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BidSheet",
+                name: "BidSheets",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JobId = table.Column<int>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    ProgjectManager = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     SquareFoot = table.Column<string>(nullable: true),
                     BedBath = table.Column<string>(nullable: true),
@@ -151,9 +202,9 @@ namespace Paint.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BidSheet", x => x.Id);
+                    table.PrimaryKey("PK_BidSheets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BidSheet_Jobs_JobId",
+                        name: "FK_BidSheets_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
@@ -223,9 +274,9 @@ namespace Paint.Data.Migrations
                 {
                     table.PrimaryKey("PK_BidArea", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BidArea_BidSheet_BidSheetId",
+                        name: "FK_BidArea_BidSheets_BidSheetId",
                         column: x => x.BidSheetId,
-                        principalTable: "BidSheet",
+                        principalTable: "BidSheets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -291,7 +342,7 @@ namespace Paint.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Active", "ClientTypeId", "CompanyName", "FirstName", "LastName", "Notes", "ParentId" },
-                values: new object[] { 2, true, 1, "OfferPad", null, null, null, 1 });
+                values: new object[] { 2, true, 1, "OfferPad", "Chase", "Timms", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BidArea_BidSheetId",
@@ -304,10 +355,15 @@ namespace Paint.Data.Migrations
                 column: "BidAreaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BidSheet_JobId",
-                table: "BidSheet",
+                name: "IX_BidSheets_JobId",
+                table: "BidSheets",
                 column: "JobId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_CategoryId",
+                table: "Categories",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientTypeId",
@@ -323,6 +379,11 @@ namespace Paint.Data.Migrations
                 name: "IX_Jobs_ClientId",
                 table: "Jobs",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceList_CategoryId",
+                table: "PriceList",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Room_JobId",
@@ -345,13 +406,19 @@ namespace Paint.Data.Migrations
                 name: "PhoneNumber");
 
             migrationBuilder.DropTable(
+                name: "PriceList");
+
+            migrationBuilder.DropTable(
                 name: "Room");
 
             migrationBuilder.DropTable(
                 name: "BidArea");
 
             migrationBuilder.DropTable(
-                name: "BidSheet");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "BidSheets");
 
             migrationBuilder.DropTable(
                 name: "Jobs");

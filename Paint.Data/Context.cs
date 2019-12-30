@@ -17,6 +17,7 @@ namespace Paint.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<PriceListLineItem> PriceList { get; set; }
+        public DbSet<BidSheet> BidSheets { get; set; }
 
         public Context()
         {

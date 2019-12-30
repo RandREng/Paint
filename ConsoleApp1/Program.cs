@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Paint.Data;
 using Paint.Domain;
+using Paint.DTO;
 using ProjectManager;
 using RandREng.Common;
 using RandREng.Paging;
@@ -51,6 +55,9 @@ namespace ConsoleApp1
                 //                .AddSingleton<ISecretRevealer, SecretRevealer>()
                 .BuildServiceProvider();
 
+            services.AddAutoMapper(typeof(PaintProfile));
+            services.AddTransient(typeof(IPaintRepository), typeof(PaintRepository));
+
             services.AddDbContext<Context>(options =>
             {
                 options.ConfigureFromSettings<Context>(Configuration, "PaintDb");
@@ -59,7 +66,7 @@ namespace ConsoleApp1
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        static void Main(string[] args)
+        static void Main4(string[] args)
         {
             Configure();
             using (Context ctx = ServiceProvider.GetService<Context>())
@@ -75,6 +82,14 @@ namespace ConsoleApp1
         }
 
 
+        static void Main(string[] args)
+        {
+            Configure();
+
+            IPaintRepository ctx = ServiceProvider.GetService<IPaintRepository>();
+            Bid bid = ctx.GetBidSheet<Bid>(3);
+            BidSheet bidSheet = ctx.GetBidSheet(3);
+        }
         static void Main2(string[] args)
         {
             Configure();

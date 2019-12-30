@@ -29,8 +29,8 @@ namespace ProjectManager
             {
                 ExcelWorkbook workbook = package.Workbook;
 
-                ProcessBidSheet(workbook);
-//                ProcessPriceList(workbook);
+//                ProcessBidSheet(workbook);
+                ProcessPriceList(workbook);
             }
         }
 
@@ -107,12 +107,15 @@ namespace ProjectManager
                     else if (worksheet.Cells[row, 5].Value != null && worksheet.Cells[row, 5].Value is double)
                     {
                         item = new BidItem();
-                        area.Items.Add(item);
                         item.Sub = worksheet.Cells[row, 1].Value?.ToString();
                         item.Category = worksheet.Cells[row, 2].Value as string;
                         item.Description = worksheet.Cells[row, 3].Value as string;
                         item.Quantity = (decimal)(((double?)worksheet.Cells[row, 4].Value) ?? 0.0);
                         item.UnitCost = (decimal)((double)worksheet.Cells[row, 5].Value);
+                        if (item.Description != null || item.Quantity != 0.0m || item.UnitCost != 0.0m)
+                        {
+                            area.Items.Add(item);
+                        }
                     }
                 }
 

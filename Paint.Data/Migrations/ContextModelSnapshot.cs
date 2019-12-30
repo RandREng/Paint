@@ -107,7 +107,7 @@ namespace Paint.Data.Migrations
                     b.HasIndex("JobId")
                         .IsUnique();
 
-                    b.ToTable("BidSheet");
+                    b.ToTable("BidSheets");
                 });
 
             modelBuilder.Entity("Paint.Domain.Category", b =>
@@ -574,7 +574,7 @@ namespace Paint.Data.Migrations
 
             modelBuilder.Entity("Paint.Domain.BidSheet", b =>
                 {
-                    b.HasOne("Paint.Domain.Job", null)
+                    b.HasOne("Paint.Domain.Job", "Job")
                         .WithOne("BidSheet")
                         .HasForeignKey("Paint.Domain.BidSheet", "JobId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -22,6 +22,12 @@ namespace Paint.DTO
                 .ForMember(d => d.City, opt => opt.MapFrom(src => src.Address.City))
                 .ForMember(d => d.State, opt => opt.MapFrom(src => src.Address.State))
                 .ForMember(d => d.Zip, opt => opt.MapFrom(src => src.Address.ZipCode));
+
+            CreateMap<BidSheet, Bid>()
+                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address.GetFormattedSiteAddress()))
+                .ForMember(d => d.ProgjectManager, opt => opt.MapFrom(src => src.Job.Client.Name));
+            CreateMap<BidArea, BidAreaDto>();
+            CreateMap<BidItem, BidItemDto>();
         }
     }
 

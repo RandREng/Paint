@@ -26,6 +26,8 @@ namespace Paint.Domain
 			Areas = new List<BidArea>();
 		}
 
+		public Job Job { get; set; }
+
 		[NotMapped]
 		public decimal Total { get => Areas.Sum(a => a.Cost); }
 	}

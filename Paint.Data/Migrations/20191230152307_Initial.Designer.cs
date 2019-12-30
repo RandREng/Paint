@@ -10,8 +10,8 @@ using Paint.Data;
 namespace Paint.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20191226151546_Bid")]
-    partial class Bid
+    [Migration("20191230152307_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,9 +83,6 @@ namespace Paint.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("BedBath")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,9 +93,6 @@ namespace Paint.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LockBox")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProgjectManager")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RenoTotal")
@@ -115,7 +109,27 @@ namespace Paint.Data.Migrations
                     b.HasIndex("JobId")
                         .IsUnique();
 
-                    b.ToTable("BidSheet");
+                    b.ToTable("BidSheets");
+                });
+
+            modelBuilder.Entity("Paint.Domain.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Paint.Domain.Client", b =>
@@ -172,6 +186,8 @@ namespace Paint.Data.Migrations
                             Active = true,
                             ClientTypeId = 1,
                             CompanyName = "OfferPad",
+                            FirstName = "Chase",
+                            LastName = "Timms",
                             ParentId = 1
                         });
                 });
@@ -437,6 +453,65 @@ namespace Paint.Data.Migrations
                     b.ToTable("PaintList");
                 });
 
+            modelBuilder.Entity("Paint.Domain.PriceListLineItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("LaborHours")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("LaborRate")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("LaborSubtotal")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("LaborTotal")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("MaterialSupplier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MaterialTotalCost")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("MaterialUnitCost")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ModelNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ProfitMargin")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("ProfitTotal")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("UOM")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("PriceList");
+                });
+
             modelBuilder.Entity("Paint.Domain.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -501,11 +576,18 @@ namespace Paint.Data.Migrations
 
             modelBuilder.Entity("Paint.Domain.BidSheet", b =>
                 {
-                    b.HasOne("Paint.Domain.Job", null)
+                    b.HasOne("Paint.Domain.Job", "Job")
                         .WithOne("BidSheet")
                         .HasForeignKey("Paint.Domain.BidSheet", "JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Paint.Domain.Category", b =>
+                {
+                    b.HasOne("Paint.Domain.Category", null)
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("Paint.Domain.Client", b =>
@@ -649,6 +731,15 @@ namespace Paint.Data.Migrations
                     b.HasOne("Paint.Domain.Job", "Job")
                         .WithOne("PaintList")
                         .HasForeignKey("Paint.Domain.PaintList", "JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Paint.Domain.PriceListLineItem", b =>
+                {
+                    b.HasOne("Paint.Domain.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

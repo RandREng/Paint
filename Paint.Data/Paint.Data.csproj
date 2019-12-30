@@ -26,11 +26,20 @@
     <Compile Remove="Migrations\20191226150254_Bid.Designer.cs" />
     <Compile Remove="Migrations\20191226150739_Bid.cs" />
     <Compile Remove="Migrations\20191226150739_Bid.Designer.cs" />
+    <Compile Remove="Migrations\20191226151546_Bid.cs" />
+    <Compile Remove="Migrations\20191226151546_Bid.Designer.cs" />
     <Compile Remove="Migrations\20191227162555_Pricing.cs" />
     <Compile Remove="Migrations\20191227162555_Pricing.Designer.cs" />
+    <Compile Remove="Migrations\20191227162822_Pricing.cs" />
+    <Compile Remove="Migrations\20191227162822_Pricing.Designer.cs" />
+    <Compile Remove="Migrations\20191230140136_Navigation.cs" />
+    <Compile Remove="Migrations\20191230140136_Navigation.Designer.cs" />
+    <Compile Remove="Migrations\20191230150253_Navigation.cs" />
+    <Compile Remove="Migrations\20191230150253_Navigation.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
   </ItemGroup>

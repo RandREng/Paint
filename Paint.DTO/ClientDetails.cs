@@ -1,12 +1,11 @@
 ﻿using Paint.Domain;
 using RandREng.Paging;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Paint.DTO
 {
-    public class ClientDetails : ClientItem
+	public class ClientDetails : ClientItem
     {
         public ClientDetails()
         {
@@ -24,4 +23,5 @@ namespace Paint.DTO
         public PagedResult<JobItem> JobsPage { get; set; }
 
     }
+
 }
