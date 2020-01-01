@@ -18,6 +18,7 @@ using AutoMapper;
 using System.Reflection;
 using Paint.DTO;
 using Microsoft.AspNetCore.Http;
+using Paint.Domain;
 
 namespace Paint.API
 {
@@ -49,6 +50,7 @@ namespace Paint.API
                 options.ConfigureFromSettings<Context>(Configuration, "PaintDb");
             });
 
+            services.AddTransient(typeof(IPaintRepository), typeof(PaintRepository));
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

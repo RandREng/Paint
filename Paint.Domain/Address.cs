@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RandREng.Common;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,19 +39,6 @@ namespace Paint.Domain
 			return formattedSiteAddress.ToString();
 		}
 
-
-	}
-
-	public class PriceList : List<PriceListLineItem>
-	{
-		public new void Add(PriceListLineItem item)
-		{
-			PriceListLineItem i2 = this.FirstOrDefault(i => string.Compare(i.Name.Trim(), item.Name.Trim(), true) == 0);
-			if (i2 == null)
-			{
-				base.Add(item);
-			}
-		}
 
 	}
 }

@@ -20,7 +20,7 @@ namespace Paint.MVC.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int clientId, int pageNumber)
         {
-            return View(await _context.Jobs.Where(j => j.ClientId == clientId).GetPagedAsync<Job>(1, 20));
+            return View(await _context.Jobs.Where(j => j.ClientId == clientId).ToPageResultAsync<Job>(1, 20));
         }
 
     }

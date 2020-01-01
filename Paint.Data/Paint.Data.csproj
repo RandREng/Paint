@@ -47,6 +47,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Paint.Domain\Paint.Domain.csproj" />
     <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
+    <ProjectReference Include="..\RandREng.Paging.EFCore\RandREng.Paging.EFCore.csproj" />
+    <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
+    <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />
   </ItemGroup>
 
 </Project>

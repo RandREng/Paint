@@ -87,9 +87,12 @@ namespace ConsoleApp1
             Configure();
 
             IPaintRepository ctx = ServiceProvider.GetService<IPaintRepository>();
-            Bid bid = ctx.GetBidSheet<Bid>(3);
-            BidSheet bidSheet = ctx.GetBidSheet(3);
+            BidSheet bidSheet = ctx.GetBidSheetAsync(3).Result;
+            Bid bid = ctx.GetBidSheetAsync<Bid>(3).Result;
+            PagedResult<BidListItem> bids = ctx.GetBidListAsync<BidListItem>(1, 25, null).Result;
+            PagedResult<BidSheet> bidSheets = ctx.GetBidListAsync(1, 25, null).Result;
         }
+
         static void Main2(string[] args)
         {
             Configure();
@@ -108,7 +111,7 @@ namespace ConsoleApp1
                     jobs = ctx.Jobs
                         .Where(j => ids.Contains(j.ClientId))
                         .OrderBy(j => j.Id)
-                        .GetPaged<Job>(page, pageSize);
+                        .ToPageResult<Job>(page, pageSize);
                     stopwatch.Stop();
                     System.Console.WriteLine($"{page} - {stopwatch.ElapsedMilliseconds}");
                     page += 1;

@@ -22,11 +22,13 @@ namespace Paint.API.Controllers
     {
         private readonly Context _context;
         private readonly IMapper _mapper;
+        private readonly IPaintRepository _paintRepository;
 
-        public ClientsController(Context context, IMapper mapper)
+        public ClientsController(Context context, IMapper mapper, IPaintRepository paintRepository)
         {
             _context = context;
             _mapper = mapper;
+            this._paintRepository = paintRepository;
         }
 
         // GET: api/Clients
@@ -36,9 +38,37 @@ namespace Paint.API.Controllers
             return _mapper.Map<List<Client>, List<ClientItem>> (await _context.Clients.Include(c => c.ClientType).ToListAsync());
         }
 
+        [HttpGet("{id}/jobs")]
+        public async Task<ActionResult<PagedResult<JobItem2>>> GetClientJobs(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        {
+            if (page < 1)
+            {
+                page = 1;
+            }
+            if (pageSize < 1 || pageSize > 50)
+            {
+                pageSize = 50;
+            }
+            return await this._paintRepository.GetJobListAsync<JobItem2>(page, pageSize, id);
+        }
+
+        [HttpGet("{id}/bids")]
+        public async Task<ActionResult<PagedResult<BidListItem2>>> GetClientBids(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        {
+            if (page < 1)
+            {
+                page = 1;
+            }
+            if (pageSize < 1 || pageSize > 50)
+            {
+                pageSize = 50;
+            }
+            return await this._paintRepository.GetBidListAsync<BidListItem2>(page, pageSize, id);
+        }
+
         // GET: api/Clients/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClientDetails>> GetClient(int id, [FromQuery] int page)
+        public async Task<ActionResult<ClientDetails>> GetClient(int id)
         {
             ClientDetails client = _mapper.Map<Client, ClientDetails>( 
                 await _context.Clients
@@ -50,18 +80,6 @@ namespace Paint.API.Controllers
             {
                 return NotFound();
             }
-
-            PagedResult<Job> jobs = await _context.Jobs
-                .Where(j => j.ClientId == client.Id)
-                .GetPagedAsync<Job>(page, 20);
-
-            client.JobsPage = new PagedResult<JobItem>();
-            client.JobsPage.CurrentPage = jobs.CurrentPage;
-            client.JobsPage.PageCount = jobs.PageCount;
-            client.JobsPage.PageSize = jobs.PageSize;
-            client.JobsPage.RowCount = jobs.RowCount;
-
-            client.JobsPage.Results = _mapper.Map<IList<Job>, IList<JobItem>>(jobs.Results);
             return client;
         }
 

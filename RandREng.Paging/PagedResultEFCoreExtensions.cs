@@ -7,9 +7,7 @@ namespace RandREng.Paging
 {
     public static partial class PagedResultEFCoreExtensions
     {
-        static private MapperConfiguration config;
-
-        public static PagedResult<T> GetPaged<T>(this IQueryable<T> query, int page, int pageSize) where T : class
+        public static PagedResult<T> ToPageResult<T>(this IQueryable<T> query, int page, int pageSize) where T : class
         {
             var result = new PagedResult<T>
             {
@@ -27,7 +25,7 @@ namespace RandREng.Paging
             return result;
         }
 
-        public static PagedResult<U> GetPaged<T, U>(this IQueryable<T> query, int page, int pageSize) where U : class
+        public static PagedResult<U> ToPageResult<T, U>(this IQueryable<T> query, int page, int pageSize, MapperConfiguration config) where U : class
         {
             var result = new PagedResult<U>
             {

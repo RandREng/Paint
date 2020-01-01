@@ -57,7 +57,7 @@ namespace Paint.MVC.Controllers
             model.Notes = client.Notes;
             model.Name = client.Name;
 
-            model.Jobs = await _context.Jobs.Where(j => j.ClientId == client.Id).GetPagedAsync<Job>(1, 20);
+            model.Jobs = await _context.Jobs.Where(j => j.ClientId == client.Id).ToPageResultAsync<Job>(1, 20);
 //            model.Jobs.Results[0].Address.GetFormattedSiteAddress();
 //            model.Jobs.Results[0].Address.Line1;
 

@@ -18,16 +18,23 @@ namespace Paint.DTO
                 .ForMember(d => d.BillingAddress, opt => opt.MapFrom(src => src.BillingAddress.GetFormattedSiteAddress()));
 
             CreateMap<Job, JobItem>()
-                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Address.Line1))
-                .ForMember(d => d.City, opt => opt.MapFrom(src => src.Address.City))
-                .ForMember(d => d.State, opt => opt.MapFrom(src => src.Address.State))
-                .ForMember(d => d.Zip, opt => opt.MapFrom(src => src.Address.ZipCode));
+                .ForMember(d => d.ProjectManager, opt => opt.MapFrom(src => src.Client != null ? src.Client.Name : null)); ;
+            CreateMap<Job, JobItem2>();
+
+
+            CreateMap<BidSheet, BidListItem>()
+                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address))
+                .ForMember(d => d.ProgjectManager, opt => opt.MapFrom(src => src.Job != null ? src.Job.Client.Name : null));
+            CreateMap<BidSheet, BidListItem2>()
+                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address));
 
             CreateMap<BidSheet, Bid>()
-                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address.GetFormattedSiteAddress()))
+                .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address))
                 .ForMember(d => d.ProgjectManager, opt => opt.MapFrom(src => src.Job.Client.Name));
             CreateMap<BidArea, BidAreaDto>();
             CreateMap<BidItem, BidItemDto>();
+
+            CreateMap<Address, AddressDto>();
         }
     }
 

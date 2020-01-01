@@ -20,8 +20,6 @@ namespace Paint.DTO
         public List<PhoneNumber> PhoneNumbers { get; set; }
 
         public List<ClientItem> Clients { get; set; }
-        public PagedResult<JobItem> JobsPage { get; set; }
-
     }
 
 }
