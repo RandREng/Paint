@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Paint.Data;
 using Paint.Domain;
 
@@ -29,8 +30,8 @@ namespace ProjectManager
             {
                 ExcelWorkbook workbook = package.Workbook;
 
-//                ProcessBidSheet(workbook);
-                ProcessPriceList(workbook);
+                ProcessBidSheet(workbook);
+//                ProcessPriceList(workbook);
             }
         }
 
@@ -97,8 +98,10 @@ namespace ProjectManager
                 for (int row = 17; row <= rowCount; row++)
                 {
                     if ((worksheet.Cells[row, 2] != null && worksheet.Cells[row, 2].Value != null) &&
-                        (worksheet.Cells[row, 5].Value == null || worksheet.Cells[row, 5].Value is string))
+                        (worksheet.Cells[row, 5].Value == null || worksheet.Cells[row, 5].Value is string) &&
+                         worksheet.Cells[row, 1].Style.Fill.BackgroundColor.Rgb != null)
                     {
+                        string color = worksheet.Cells[row, 1].Style.Fill.BackgroundColor.Rgb;
                         area = new BidArea();
                         BidSheet.Areas.Add(area);
                         area.Name = worksheet.Cells[row, 2].Value as string;
@@ -107,11 +110,47 @@ namespace ProjectManager
                     else if (worksheet.Cells[row, 5].Value != null && worksheet.Cells[row, 5].Value is double)
                     {
                         item = new BidItem();
-                        item.Sub = worksheet.Cells[row, 1].Value?.ToString();
-                        item.Category = worksheet.Cells[row, 2].Value as string;
+                        item.Category = worksheet.Cells[row, 1].Value?.ToString();
+                        item.Sub = worksheet.Cells[row, 2].Value as string;
                         item.Description = worksheet.Cells[row, 3].Value as string;
                         item.Quantity = (decimal)(((double?)worksheet.Cells[row, 4].Value) ?? 0.0);
                         item.UnitCost = (decimal)((double)worksheet.Cells[row, 5].Value);
+
+                        if (item.Sub != null && item.Sub.Contains("paint", StringComparison.OrdinalIgnoreCase))
+                        {
+                            item.Category = "Paint";
+                        }
+
+                        if (item.Category != null && item.Category == "Paint")
+                        {
+                            if (item.Description != null && (item.Description.Contains("cabinet", StringComparison.OrdinalIgnoreCase) ||
+                                item.Description.Contains("garage", StringComparison.OrdinalIgnoreCase) ||
+                                item.Description.Contains("primer", StringComparison.OrdinalIgnoreCase)))
+                            {
+                                item.Sub = "Interior Paint";
+                            }
+                            else if (item.Description != null && item.Description.Contains("exterior", StringComparison.OrdinalIgnoreCase))
+                            {
+                                item.Sub = "Exterior Paint";
+                            }
+                        }
+
+                        if (item.Description != null && 
+                            (item.Description.Contains("primer", StringComparison.OrdinalIgnoreCase) || 
+                            (item.Description.Contains("paint", StringComparison.OrdinalIgnoreCase) && item.Description.Contains("cabin", StringComparison.OrdinalIgnoreCase)) ||
+                            (item.Description.Contains("paint", StringComparison.OrdinalIgnoreCase) && item.Description.Contains("vanity", StringComparison.OrdinalIgnoreCase))
+                            ))
+                        {
+                            item.Category = "Paint";
+                            item.Sub = "Interior Paint";
+                        }
+
+                        if (item.Description != null && item.Description.Contains("shoe", StringComparison.OrdinalIgnoreCase))
+                        {
+                            item.Category = "Flooring";
+                            item.Sub = "Trim";
+                        }
+
                         if (item.Description != null || item.Quantity != 0.0m || item.UnitCost != 0.0m)
                         {
                             area.Items.Add(item);

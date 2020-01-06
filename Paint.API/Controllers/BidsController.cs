@@ -27,7 +27,11 @@ namespace Paint.API.Controllers
 
         // GET: api/Bid
         [HttpGet]
-        public async Task<ActionResult<PagedResult<BidListItem>>> GetBidSheets([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<ActionResult<PagedResult<BidListItem>>> GetBidSheets(
+            [FromQuery] int page, 
+            [FromQuery] int pageSize = 25,
+            [FromQuery] string sortColumn = null,
+            [FromQuery] string sortDirection = null)
         {
             if (page < 1)
             {
@@ -37,7 +41,7 @@ namespace Paint.API.Controllers
             {
                 pageSize = 50;
             }
-            return await _repository.GetBidListAsync<BidListItem>(page, pageSize);
+            return await _repository.GetBidListAsync<BidListItem>(page, pageSize, sortColumn, sortDirection);
         }
 
         // GET: api/Bid/5

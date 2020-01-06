@@ -25,7 +25,11 @@ namespace Paint.API.Controllers
 
         // GET: api/Jobs
         [HttpGet]
-        public async Task<ActionResult<PagedResult<JobItem>>> GetJobs([FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<ActionResult<PagedResult<JobItem>>> GetJobs(
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 25,
+            [FromQuery] string sortColumn = null,
+            [FromQuery] string sortDirection = null)
         {
             if (page < 1)
             {
@@ -35,7 +39,7 @@ namespace Paint.API.Controllers
             {
                 pageSize = 50;
             }
-            return await _repository.GetJobListAsync<JobItem>(page, pageSize, null);
+            return await _repository.GetJobListAsync<JobItem>(page, pageSize, sortColumn, sortDirection, null);
         }
 
         //// GET: api/Jobs/5

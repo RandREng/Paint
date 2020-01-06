@@ -20,7 +20,7 @@
     "Paint.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/clients",
+      "launchUrl": "http://localhost:4200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

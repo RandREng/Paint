@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Paint.Domain;
 using RandREng.Paging;
 using RandREng.Paging.EFCore;
@@ -42,64 +43,133 @@ namespace Paint.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<PagedResult<T>> GetBidListAsync<T>(int page, int pageSize, int? clientId = null) where T : class
+        public async Task<PagedResult<T>> GetBidListAsync<T>(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null) where T : class
         {
-            if (clientId is null)
-            {
-                return await context.BidSheets
-                    .Include(b => b.Job).ThenInclude(j => j.Client).ThenInclude(c => c.Parent)
-                    .ToPageResultAsync<BidSheet, Client, T>(page, pageSize, mapper.ConfigurationProvider);
-            }
-            else
-            {
-                return await context.BidSheets.Where(b => b.Job.ClientId == clientId.Value)
-                    .ToPageResultAsync<BidSheet, T>(page, pageSize, mapper.ConfigurationProvider);
-            }
+            IQueryable<BidSheet> query = buildBidListQuery(clientId, sortColumn, sortDirection);
+            return await query.ToPageResultAsync<BidSheet, T>(page, pageSize, mapper.ConfigurationProvider);
+
         }
 
-        public async Task<PagedResult<BidSheet>> GetBidListAsync(int page, int pageSize, int? clientId = null)
+        public async Task<PagedResult<BidSheet>> GetBidListAsync(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null)
         {
-            if (clientId is null)
-            {
-                return await context.BidSheets
-                .Include(b => b.Job).ThenInclude(j => j.Client).ThenInclude(c => c.Parent)
-                .ToPageResultAsync<BidSheet>(page, pageSize);
-            }
-            else
-            {
-                return await context.BidSheets.Include(b => b.Job).Where(b => b.Job.ClientId == clientId.Value)
-                    .ToPageResultAsync<BidSheet>(page, pageSize);
-            }
+            IQueryable<BidSheet> query = buildBidListQuery(clientId, sortColumn, sortDirection);
+            return await query.ToPageResultAsync<BidSheet>(page, pageSize);
         }
 
-        public async Task<PagedResult<T>> GetJobListAsync<T>(int page, int pageSize, int? clientId = null) where T : class
+        private IQueryable<BidSheet> buildBidListQuery(int? clientId, string sortColumn, string sortDirection)
         {
+            IQueryable<BidSheet> query = null;
             if (clientId is null)
             {
-                return await context.Jobs
-                    .Include(j => j.Client).ThenInclude(c => c.Parent)
-                    .ToPageResultAsync<Job, Client, T>(page, pageSize, mapper.ConfigurationProvider);
+                query = context.BidSheets
+                .Include(b => b.Job).ThenInclude(j => j.Client).ThenInclude(c => c.Parent);
             }
             else
             {
-                return await context.Jobs.Where(j => j.ClientId == clientId.Value)
-                    .ToPageResultAsync<Job, T>(page, pageSize, mapper.ConfigurationProvider);
+                query = context.BidSheets.Include(b => b.Job).Where(b => b.Job.ClientId == clientId.Value);
             }
+
+            if (sortDirection == "asc")
+            {
+                if (sortColumn == "name")
+                {
+                    query = query.OrderBy(b => b.Job.Client.LastName).ThenBy(b => b.Job.Client.FirstName);
+                }
+                else if (sortColumn == "address")
+                {
+                    query = query.OrderBy(b => b.Job.Address.Line1);
+                }
+                else if (sortColumn == "city")
+                {
+                    query = query.OrderBy(b => b.Job.Address.City);
+                }
+                else if (sortColumn == "budget")
+                {
+                    query = query.OrderBy(b => b.RenoTotal);
+                }
+            }
+            else if (sortDirection == "desc")
+            {
+                if (sortColumn == "name")
+                {
+                    query = query.OrderByDescending(b => b.Job.Client.LastName).ThenByDescending(b => b.Job.Client.FirstName);
+                }
+                else if (sortColumn == "address")
+                {
+                    query = query.OrderByDescending(b => b.Job.Address.Line1);
+                }
+                else if (sortColumn == "city")
+                {
+                    query = query.OrderByDescending(b => b.Job.Address.City);
+                }
+                else if (sortColumn == "budget")
+                {
+                    query = query.OrderByDescending(b => b.RenoTotal);
+                }
+            }
+            return query;
+
         }
 
-        public async Task<PagedResult<Job>> GetJobListAsync(int page, int pageSize, int? clientId = null)
+
+        public async Task<PagedResult<T>> GetJobListAsync<T>(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null) where T : class
         {
+            IQueryable<Job> query = buildJobListQuery(clientId, sortColumn, sortDirection);
+            return await query.ToPageResultAsync<Job, T>(page, pageSize, mapper.ConfigurationProvider);
+        }
+
+        public async Task<PagedResult<Job>> GetJobListAsync(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null)
+        {
+            IQueryable<Job> query = buildJobListQuery(clientId, sortColumn, sortDirection);
+            return await query.ToPageResultAsync<Job>(page, pageSize);
+        }
+
+        private IQueryable<Job> buildJobListQuery(int? clientId, string sortColumn, string sortDirection)
+        {
+            IQueryable<Job> query = null;
             if (clientId is null)
             {
-                return await context.Jobs
-                .Include(j => j.Client).ThenInclude(c => c.Parent)
-                .ToPageResultAsync<Job>(page, pageSize);
+                query = context.Jobs
+                    .Include(j => j.Client).ThenInclude(c => c.Parent);
             }
             else
             {
-                return await context.Jobs.Where(j => j.ClientId == clientId.Value)
-                    .ToPageResultAsync<Job>(page, pageSize);
+                query = context.Jobs
+                    .Where(j => j.ClientId == clientId.Value);
             }
+
+            if (sortDirection == "asc")
+            {
+                if (sortColumn == "name")
+                {
+                    query = query.OrderBy(j => j.Client.LastName).ThenBy(j => j.Client.FirstName);
+                }
+                else if (sortColumn == "address")
+                {
+                    query = query.OrderBy(j => j.Address.Line1);
+                }
+                else if (sortColumn == "city")
+                {
+                    query = query.OrderBy(j => j.Address.City);
+                }
+            }
+            else if (sortDirection == "desc")
+            {
+                if (sortColumn == "name")
+                {
+                    query = query.OrderByDescending(j => j.Client.LastName).ThenByDescending(j => j.Client.FirstName);
+                }
+                else if (sortColumn == "address")
+                {
+                    query = query.OrderByDescending(j => j.Address.Line1);
+                }
+                else if (sortColumn == "city")
+                {
+                    query = query.OrderByDescending(j => j.Address.City);
+                }
+            }
+            return query;
+
         }
 
     }

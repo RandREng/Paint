@@ -24,7 +24,7 @@ namespace Paint.DTO
 
             CreateMap<BidSheet, BidListItem>()
                 .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address))
-                .ForMember(d => d.ProgjectManager, opt => opt.MapFrom(src => src.Job != null ? src.Job.Client.Name : null));
+                .ForMember(d => d.ProjectManager, opt => opt.MapFrom(src => src.Job != null ? src.Job.Client.Name : null));
             CreateMap<BidSheet, BidListItem2>()
                 .ForMember(d => d.Address, opt => opt.MapFrom(src => src.Job.Address));
 

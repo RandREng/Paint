@@ -66,7 +66,7 @@ namespace ConsoleApp1
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        static void Main4(string[] args)
+        static void Main(string[] args)
         {
             Configure();
             using (Context ctx = ServiceProvider.GetService<Context>())
@@ -82,15 +82,34 @@ namespace ConsoleApp1
         }
 
 
-        static void Main(string[] args)
+        static void Main4(string[] args)
         {
             Configure();
+            using (Context ctx = ServiceProvider.GetService<Context>())
+            {
+                ctx.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+                List<BidSheet> bids = ctx.BidSheets.Include(b => b.Areas).ThenInclude(ba => ba.Items).ToList();
+                foreach (BidSheet bid in bids)
+                {
+                    foreach (BidArea area in bid.Areas)
+                    {
+                        foreach (BidItem item in area.Items)
+                        {
+                            string temp = item.Category;
+                            item.Category = item.Sub;
+                            item.Sub = temp;
+//                            ctx.Entry(item).State = EntityState.Modified;
+                        }
+                    }
+                }
+                int x = ctx.SaveChanges();
+            }
 
-            IPaintRepository ctx = ServiceProvider.GetService<IPaintRepository>();
-            BidSheet bidSheet = ctx.GetBidSheetAsync(3).Result;
-            Bid bid = ctx.GetBidSheetAsync<Bid>(3).Result;
-            PagedResult<BidListItem> bids = ctx.GetBidListAsync<BidListItem>(1, 25, null).Result;
-            PagedResult<BidSheet> bidSheets = ctx.GetBidListAsync(1, 25, null).Result;
+            //    IPaintRepository ctx = ServiceProvider.GetService<IPaintRepository>();
+            //BidSheet bidSheet = ctx.GetBidSheetAsync(3).Result;
+            //Bid bid = ctx.GetBidSheetAsync<Bid>(3).Result;
+            //PagedResult<BidListItem> bids = ctx.GetBidListAsync<BidListItem>(1, 25, null, null, null).Result;
+            //PagedResult<BidSheet> bidSheets = ctx.GetBidListAsync(1, 25, null, null, null).Result;
         }
 
         static void Main2(string[] args)

@@ -39,7 +39,12 @@ namespace Paint.API.Controllers
         }
 
         [HttpGet("{id}/jobs")]
-        public async Task<ActionResult<PagedResult<JobItem2>>> GetClientJobs(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<ActionResult<PagedResult<JobItem2>>> GetClientJobs(
+            int id, 
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 25,
+            [FromQuery] string sortColumn = null,
+            [FromQuery] string sortDirection = null)
         {
             if (page < 1)
             {
@@ -49,11 +54,16 @@ namespace Paint.API.Controllers
             {
                 pageSize = 50;
             }
-            return await this._paintRepository.GetJobListAsync<JobItem2>(page, pageSize, id);
+            return await this._paintRepository.GetJobListAsync<JobItem2>(page, pageSize, sortColumn, sortDirection, id);
         }
 
         [HttpGet("{id}/bids")]
-        public async Task<ActionResult<PagedResult<BidListItem2>>> GetClientBids(int id, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<ActionResult<PagedResult<BidListItem2>>> GetClientBids(
+            int id, 
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 25,
+            [FromQuery] string sortColumn = null,
+            [FromQuery] string sortDirection = null)
         {
             if (page < 1)
             {
@@ -63,7 +73,7 @@ namespace Paint.API.Controllers
             {
                 pageSize = 50;
             }
-            return await this._paintRepository.GetBidListAsync<BidListItem2>(page, pageSize, id);
+            return await this._paintRepository.GetBidListAsync<BidListItem2>(page, pageSize, sortColumn, sortDirection, id);
         }
 
         // GET: api/Clients/5
