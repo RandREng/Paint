@@ -48,13 +48,25 @@ namespace Paint.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Bid>> GetBidSheet(int id)
         {
-            var bidSheet = await _repository.GetBidSheetAsync<Bid>(id);
-            if (bidSheet == null)
+            var data = await _repository.GetBidSheetAsync<Bid>(id);
+            if (data == null)
             {
                 return NotFound();
             }
 
-            return bidSheet;
+            return data;
+        }
+
+        [HttpGet("item/{id}")]
+        public async Task<ActionResult<BidItemDto>> GetBidItem(int id)
+        {
+            var data = await _repository.GetBidItem<BidItemDto>(id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            return data;
         }
 
         /*

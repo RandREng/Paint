@@ -16,5 +16,7 @@ namespace Paint.Domain
 
         public Task<PagedResult<T>> GetJobListAsync<T>(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null) where T : class;
         public Task<PagedResult<Job>> GetJobListAsync(int page, int pageSize, string sortColumn, string sortDirection, int? clientId = null);
+
+        public Task<T> GetBidItem<T>(int i);
     }
 }

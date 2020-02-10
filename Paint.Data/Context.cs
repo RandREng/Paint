@@ -18,6 +18,7 @@ namespace Paint.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<PriceListLineItem> PriceList { get; set; }
         public DbSet<BidSheet> BidSheets { get; set; }
+        public DbSet<BidItem> BidItems { get; set; }
 
         public Context()
         {

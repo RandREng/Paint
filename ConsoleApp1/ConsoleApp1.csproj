@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Paint.DTO\Paint.DTO.csproj" />
     <ProjectReference Include="..\ProjectManager.OpenDoor\ProjectManager.OpenDoor.csproj" />
     <ProjectReference Include="..\RandREng.Common\RandREng.Common.csproj" />
+    <ProjectReference Include="..\RandREng.GraphClient\RandREng.GraphClient.csproj" />
     <ProjectReference Include="..\RandREng.Paging.EFCore\RandREng.Paging.EFCore.csproj" />
     <ProjectReference Include="..\RandREng.Paging\RandREng.Paging.csproj" />
   </ItemGroup>

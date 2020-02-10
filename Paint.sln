@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paint.DTO", "Paint.DTO\Pain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectManager.OpenDoor", "ProjectManager.OpenDoor\ProjectManager.OpenDoor.csproj", "{88C65F91-688B-48FE-B4FD-EFF637A5D69A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandREng.GraphClient", "RandREng.GraphClient\RandREng.GraphClient.csproj", "{741C1E8B-AA53-4392-8EF9-671AFC3CFEBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88C65F91-688B-48FE-B4FD-EFF637A5D69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{741C1E8B-AA53-4392-8EF9-671AFC3CFEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741C1E8B-AA53-4392-8EF9-671AFC3CFEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741C1E8B-AA53-4392-8EF9-671AFC3CFEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{741C1E8B-AA53-4392-8EF9-671AFC3CFEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

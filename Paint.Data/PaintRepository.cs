@@ -24,6 +24,14 @@ namespace Paint.Data
             this.context = context;
         }
 
+        public async Task<T> GetBidItem<T>(int i)
+        {
+            return await context.BidItems
+                .Where(b => b.Id == i)
+                .ProjectTo<T>(mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<T> GetBidSheetAsync<T>(int i)
         {
             return await context.BidSheets
