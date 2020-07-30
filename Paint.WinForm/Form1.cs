@@ -21,6 +21,7 @@ namespace Paint.WinForm
 
 
             this.Job.PaintList = new PaintList();
+            this.Job.PaintList.Job = this.Job;
 
             var bs = new BindingSource
             {

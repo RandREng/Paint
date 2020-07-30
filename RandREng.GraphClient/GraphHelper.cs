@@ -55,7 +55,7 @@ namespace RandREng.GraphClient
             }
         }
 
-        public static async Task<IEnumerable<Group>> GetTeamsAsync()
+        public static async Task<IEnumerable<Team>> GetTeamsAsync()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace RandREng.GraphClient
             }
         }
 
-        public static async Task<Group> GetTeam()
+        public static async Task<Team> GetTeam()
         {
             var item = await graphClient.Me.JoinedTeams.Request().GetAsync();
             return item.FirstOrDefault();
